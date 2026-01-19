@@ -27,9 +27,9 @@ def safe_play_audio(text):
         st.caption(f"🔇 (語音生成暫時無法使用)")
 
 # --- 0. 系統配置 ---
-st.set_page_config(page_title="Unit 20: O 'Aadopen", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="Unit 20: O 'A'adopen", page_icon="🐾", layout="centered")
 
-# --- CSS 美化 (大地與森林色系) ---
+# --- CSS 美化 ---
 st.markdown("""
     <style>
     body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
@@ -68,18 +68,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. 資料庫 (Unit 20: 全新單字) ---
+# --- 2. 資料庫 (Unit 20 修正版) ---
 vocab_data = [
-    {"amis": "'Aadopen", "chi": "動物", "icon": "🐾", "source": "New: Animal"},
+    {"amis": "'A'adopen", "chi": "動物", "icon": "🐾", "source": "User Fix"},
     {"amis": "Waco", "chi": "狗", "icon": "🐕", "source": "New: Dog"},
     {"amis": "Posi", "chi": "貓", "icon": "🐈", "source": "New: Cat"},
     {"amis": "Fafoy", "chi": "豬", "icon": "🐖", "source": "New: Pig"},
-    {"amis": "Kolong", "chi": "牛", "icon": "🐂", "source": "New: Buffalo/Cow"},
+    {"amis": "Kolong", "chi": "牛", "icon": "🐂", "source": "New: Buffalo"},
     {"amis": "Siri", "chi": "羊", "icon": "🐐", "source": "New: Goat"},
-    {"amis": "Ayam", "chi": "鳥", "icon": "🐦", "source": "New: Bird"},
-    {"amis": "'Oney", "chi": "蛇", "icon": "🐍", "source": "New: Snake"},
+    {"amis": "'Ayam", "chi": "鳥", "icon": "🐦", "source": "User Fix"},
+    {"amis": "'Oner", "chi": "蛇", "icon": "🐍", "source": "User Fix"},
     {"amis": "Lotong", "chi": "猴子", "icon": "🐒", "source": "New: Monkey"},
-    {"amis": "Karang", "chi": "螃蟹", "icon": "🦀", "source": "New: Crab"},
+    {"amis": "Kalang", "chi": "螃蟹", "icon": "🦀", "source": "User Fix"},
 ]
 
 sentences = [
@@ -87,7 +87,7 @@ sentences = [
     {"amis": "Tata'ang ko fafoy.", "chi": "豬很大。", "icon": "🐖", "source": "Tata'ang (Big) + Fafoy"},
     {"amis": "I omah ko kolong.", "chi": "牛在田裡。", "icon": "🐂", "source": "Unit 13 Review"},
     {"amis": "Maolah ko posi a mafoti'.", "chi": "貓喜歡睡覺。", "icon": "🐈", "source": "Unit 12 + Unit 17 Review"},
-    {"amis": "Kohecalay ko ayam.", "chi": "那隻鳥是白色的。", "icon": "🕊️", "source": "Unit 19 Review"},
+    {"amis": "Kohecalay ko 'ayam.", "chi": "那隻鳥是白色的。", "icon": "🕊️", "source": "Unit 19 Review"},
 ]
 
 # --- 3. 隨機題庫 (定義) ---
@@ -121,8 +121,8 @@ raw_quiz_pool = [
         "hint": "喵喵叫的動物"
     },
     {
-        "q": "單字測驗：'Oney",
-        "audio": "'Oney",
+        "q": "單字測驗：'Oner",
+        "audio": "'Oner",
         "options": ["蛇", "猴子", "鳥"],
         "ans": "蛇",
         "hint": "沒有腳的動物"
@@ -135,11 +135,18 @@ raw_quiz_pool = [
         "hint": "咩咩叫的動物"
     },
     {
-        "q": "「猴子」的阿美語怎麼說？",
+        "q": "「螃蟹」的阿美語怎麼說？",
         "audio": None,
-        "options": ["Lotong", "Karang", "Ayam"],
-        "ans": "Lotong",
-        "hint": "喜歡爬樹的"
+        "options": ["Kalang", "Lotong", "'Ayam"],
+        "ans": "Kalang",
+        "hint": "有兩隻大螯的"
+    },
+    {
+        "q": "單字測驗：'Ayam",
+        "audio": "'Ayam",
+        "options": ["鳥", "雞", "鴨"], # 廣義上Ayam也可指禽類，但在選項中以最核心的「鳥」為主
+        "ans": "鳥",
+        "hint": "在天上飛的"
     }
 ]
 
@@ -162,8 +169,8 @@ if 'init' not in st.session_state:
     st.session_state.init = True
 
 # --- 5. 主介面 ---
-st.markdown("<h1 style='text-align: center; color: #2E7D32;'>Unit 20: O 'Aadopen</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666;'>動物 (New Vocabulary Only)</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #2E7D32;'>Unit 20: O 'A'adopen</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666;'>動物 (User Corrected)</p>", unsafe_allow_html=True)
 
 tab1, tab2 = st.tabs(["📚 詞彙與句型", "🎲 隨機挑戰"])
 
@@ -212,7 +219,6 @@ with tab2:
             if st.button("🎧 播放題目音檔", key=f"btn_audio_{st.session_state.current_q_idx}"):
                 safe_play_audio(q_data['audio'])
         
-        # 使用洗牌後的選項
         unique_key = f"q_{st.session_state.quiz_id}_{st.session_state.current_q_idx}"
         user_choice = st.radio("請選擇正確答案：", q_data['shuffled_options'], key=unique_key)
         
