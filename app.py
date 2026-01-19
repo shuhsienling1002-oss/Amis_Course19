@@ -26,8 +26,8 @@ def safe_play_audio(text):
     except Exception as e:
         st.caption(f"🔇 (語音生成暫時無法使用)")
 
-# --- 0. 系統配置 ---
-st.set_page_config(page_title="Unit 20: O 'A'adopen", page_icon="🐾", layout="centered")
+# --- 0. 系統配置 (修改為 Unit 19) ---
+st.set_page_config(page_title="Unit 19: O 'A'adopen", page_icon="🐾", layout="centered")
 
 # --- CSS 美化 ---
 st.markdown("""
@@ -68,7 +68,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. 資料庫 (核心單字) ---
+# --- 2. 資料庫 (核心單字 - Unit 19) ---
 vocab_data = [
     {"amis": "'A'adopen", "chi": "動物", "icon": "🐾", "source": "User Fix"},
     {"amis": "Waco", "chi": "狗", "icon": "🐕", "source": "New: Dog"},
@@ -90,7 +90,7 @@ sentences = [
     {"amis": "Kohecalay ko 'ayam.", "chi": "那隻鳥是白色的。", "icon": "🕊️", "source": "Unit 19 Review"},
 ]
 
-# --- 3. 隨機題庫 (已全面更新拼寫) ---
+# --- 3. 隨機題庫 (同步更新拼寫) ---
 raw_quiz_pool = [
     {
         "q": "Ciwaco kiso?",
@@ -121,7 +121,7 @@ raw_quiz_pool = [
         "hint": "喵喵叫的動物"
     },
     {
-        "q": "單字測驗：'Oner (修正拼寫)",
+        "q": "單字測驗：'Oner",
         "audio": "'Oner",
         "options": ["蛇", "猴子", "鳥"],
         "ans": "蛇",
@@ -142,7 +142,7 @@ raw_quiz_pool = [
         "hint": "有兩隻大螯的 (Kalang)"
     },
     {
-        "q": "單字測驗：'Ayam (修正拼寫)",
+        "q": "單字測驗：'Ayam",
         "audio": "'Ayam",
         "options": ["鳥", "雞", "鴨"],
         "ans": "鳥",
@@ -168,15 +168,15 @@ if 'init' not in st.session_state:
     st.session_state.quiz_questions = final_questions
     st.session_state.init = True
 
-# --- 5. 主介面 ---
-st.markdown("<h1 style='text-align: center; color: #2E7D32;'>Unit 20: O 'A'adopen</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666;'>動物</p>", unsafe_allow_html=True)
+# --- 5. 主介面 (Title Updated) ---
+st.markdown("<h1 style='text-align: center; color: #2E7D32;'>Unit 19: O 'A'adopen</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666;'>動物 (Animals)</p>", unsafe_allow_html=True)
 
 tab1, tab2 = st.tabs(["📚 詞彙與句型", "🎲 隨機挑戰"])
 
 # === Tab 1: 學習模式 ===
 with tab1:
-    st.subheader("📝 核心單字 (New)")
+    st.subheader("📝 核心單字")
     col1, col2 = st.columns(2)
     for i, word in enumerate(vocab_data):
         with (col1 if i % 2 == 0 else col2):
@@ -219,7 +219,6 @@ with tab2:
             if st.button("🎧 播放題目音檔", key=f"btn_audio_{st.session_state.current_q_idx}"):
                 safe_play_audio(q_data['audio'])
         
-        # 使用洗牌後的選項
         unique_key = f"q_{st.session_state.quiz_id}_{st.session_state.current_q_idx}"
         user_choice = st.radio("請選擇正確答案：", q_data['shuffled_options'], key=unique_key)
         
@@ -245,7 +244,6 @@ with tab2:
         """, unsafe_allow_html=True)
         
         if st.button("🔄 再來一局 (重新抽題)", key="btn_restart"):
-            # 重置與洗牌
             st.session_state.score = 0
             st.session_state.current_q_idx = 0
             st.session_state.quiz_id = str(random.randint(1000, 9999))
@@ -260,4 +258,3 @@ with tab2:
             
             st.session_state.quiz_questions = final_qs
             safe_rerun()
-
