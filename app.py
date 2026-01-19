@@ -68,7 +68,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. 資料庫 (Unit 20 修正版) ---
+# --- 2. 資料庫 (核心單字) ---
 vocab_data = [
     {"amis": "'A'adopen", "chi": "動物", "icon": "🐾", "source": "User Fix"},
     {"amis": "Waco", "chi": "狗", "icon": "🐕", "source": "New: Dog"},
@@ -90,7 +90,7 @@ sentences = [
     {"amis": "Kohecalay ko 'ayam.", "chi": "那隻鳥是白色的。", "icon": "🕊️", "source": "Unit 19 Review"},
 ]
 
-# --- 3. 隨機題庫 (定義) ---
+# --- 3. 隨機題庫 (已全面更新拼寫) ---
 raw_quiz_pool = [
     {
         "q": "Ciwaco kiso?",
@@ -121,11 +121,11 @@ raw_quiz_pool = [
         "hint": "喵喵叫的動物"
     },
     {
-        "q": "單字測驗：'Oner",
+        "q": "單字測驗：'Oner (修正拼寫)",
         "audio": "'Oner",
         "options": ["蛇", "猴子", "鳥"],
         "ans": "蛇",
-        "hint": "沒有腳的動物"
+        "hint": "沒有腳的動物 ('Oner)"
     },
     {
         "q": "單字測驗：Siri",
@@ -139,14 +139,14 @@ raw_quiz_pool = [
         "audio": None,
         "options": ["Kalang", "Lotong", "'Ayam"],
         "ans": "Kalang",
-        "hint": "有兩隻大螯的"
+        "hint": "有兩隻大螯的 (Kalang)"
     },
     {
-        "q": "單字測驗：'Ayam",
+        "q": "單字測驗：'Ayam (修正拼寫)",
         "audio": "'Ayam",
-        "options": ["鳥", "雞", "鴨"], # 廣義上Ayam也可指禽類，但在選項中以最核心的「鳥」為主
+        "options": ["鳥", "雞", "鴨"],
         "ans": "鳥",
-        "hint": "在天上飛的"
+        "hint": "在天上飛的 ('Ayam)"
     }
 ]
 
@@ -170,7 +170,7 @@ if 'init' not in st.session_state:
 
 # --- 5. 主介面 ---
 st.markdown("<h1 style='text-align: center; color: #2E7D32;'>Unit 20: O 'A'adopen</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666;'>動物 (User Corrected)</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666;'>動物 (Quiz Synced)</p>", unsafe_allow_html=True)
 
 tab1, tab2 = st.tabs(["📚 詞彙與句型", "🎲 隨機挑戰"])
 
@@ -219,6 +219,7 @@ with tab2:
             if st.button("🎧 播放題目音檔", key=f"btn_audio_{st.session_state.current_q_idx}"):
                 safe_play_audio(q_data['audio'])
         
+        # 使用洗牌後的選項
         unique_key = f"q_{st.session_state.quiz_id}_{st.session_state.current_q_idx}"
         user_choice = st.radio("請選擇正確答案：", q_data['shuffled_options'], key=unique_key)
         
@@ -244,6 +245,7 @@ with tab2:
         """, unsafe_allow_html=True)
         
         if st.button("🔄 再來一局 (重新抽題)", key="btn_restart"):
+            # 重置與洗牌
             st.session_state.score = 0
             st.session_state.current_q_idx = 0
             st.session_state.quiz_id = str(random.randint(1000, 9999))
