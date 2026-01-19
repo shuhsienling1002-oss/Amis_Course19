@@ -18,7 +18,7 @@ def safe_play_audio(text):
     """語音播放安全模式"""
     try:
         from gtts import gTTS
-        # 使用印尼語 (id) 發音，最接近南島語韻律
+        # 使用印尼語 (id) 發音
         tts = gTTS(text=text, lang='id')
         fp = BytesIO()
         tts.write_to_fp(fp)
@@ -27,9 +27,9 @@ def safe_play_audio(text):
         st.caption(f"🔇 (語音生成暫時無法使用)")
 
 # --- 0. 系統配置 ---
-st.set_page_config(page_title="Unit 19: O Dikuc", page_icon="👕", layout="centered")
+st.set_page_config(page_title="Unit 20: O 'Aadopen", page_icon="🐾", layout="centered")
 
-# --- CSS 美化 (時尚紫) ---
+# --- CSS 美化 (大地與森林色系) ---
 st.markdown("""
     <style>
     body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
@@ -37,22 +37,22 @@ st.markdown("""
     
     /* 單字卡 */
     .word-card {
-        background: linear-gradient(135deg, #F3E5F5 0%, #ffffff 100%);
+        background: linear-gradient(135deg, #E8F5E9 0%, #ffffff 100%);
         padding: 20px;
         border-radius: 15px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         text-align: center;
         margin-bottom: 15px;
-        border-bottom: 4px solid #AB47BC;
+        border-bottom: 4px solid #43A047;
     }
     .emoji-icon { font-size: 48px; margin-bottom: 10px; }
-    .amis-text { font-size: 22px; font-weight: bold; color: #8E24AA; }
+    .amis-text { font-size: 22px; font-weight: bold; color: #2E7D32; }
     .chinese-text { font-size: 16px; color: #7f8c8d; }
     
     /* 句子框 */
     .sentence-box {
-        background-color: #F3E5F5;
-        border-left: 5px solid #BA68C8;
+        background-color: #F1F8E9;
+        border-left: 5px solid #81C784;
         padding: 15px;
         margin: 10px 0;
         border-radius: 0 10px 10px 0;
@@ -61,85 +61,85 @@ st.markdown("""
     /* 按鈕 */
     .stButton>button {
         width: 100%; border-radius: 12px; font-size: 20px; font-weight: 600;
-        background-color: #E1BEE7; color: #4A148C; border: 2px solid #AB47BC; padding: 12px;
+        background-color: #C8E6C9; color: #1B5E20; border: 2px solid #43A047; padding: 12px;
     }
-    .stButton>button:hover { background-color: #CE93D8; border-color: #8E24AA; }
-    .stProgress > div > div > div > div { background-color: #AB47BC; }
+    .stButton>button:hover { background-color: #A5D6A7; border-color: #2E7D32; }
+    .stProgress > div > div > div > div { background-color: #43A047; }
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. 資料庫 (Unit 19 嚴格校對版) ---
+# --- 2. 資料庫 (Unit 20: 全新單字) ---
 vocab_data = [
-    {"amis": "Dikuc", "chi": "衣服", "icon": "👕", "source": "Standard Dict"},
-    {"amis": "Kiping", "chi": "上衣", "icon": "👚", "source": "Standard Dict"},
-    {"amis": "Talaw", "chi": "褲子", "icon": "👖", "source": "Standard Dict"},
-    {"amis": "Tupel", "chi": "帽子", "icon": "🧢", "source": "Standard Dict"},
-    {"amis": "Cukap", "chi": "鞋子", "icon": "👟", "source": "Standard Dict"},
-    {"amis": "Cidikuc", "chi": "穿著衣服 (有衣服)", "icon": "🕴️", "source": "Ci+Dikuc"},
-    {"amis": "Kohecal", "chi": "白色", "icon": "⚪", "source": "Basic Colors"},
-    {"amis": "Kahengang", "chi": "紅色", "icon": "🔴", "source": "Basic Colors"},
-    {"amis": "Koheting", "chi": "黑色", "icon": "⚫", "source": "Basic Colors"},
-    {"amis": "Fangcal", "chi": "漂亮 / 好看", "icon": "✨", "source": "Basic Adjectives"},
+    {"amis": "'Aadopen", "chi": "動物", "icon": "🐾", "source": "New: Animal"},
+    {"amis": "Waco", "chi": "狗", "icon": "🐕", "source": "New: Dog"},
+    {"amis": "Posi", "chi": "貓", "icon": "🐈", "source": "New: Cat"},
+    {"amis": "Fafoy", "chi": "豬", "icon": "🐖", "source": "New: Pig"},
+    {"amis": "Kolong", "chi": "牛", "icon": "🐂", "source": "New: Buffalo/Cow"},
+    {"amis": "Siri", "chi": "羊", "icon": "🐐", "source": "New: Goat"},
+    {"amis": "Ayam", "chi": "鳥", "icon": "🐦", "source": "New: Bird"},
+    {"amis": "'Oney", "chi": "蛇", "icon": "🐍", "source": "New: Snake"},
+    {"amis": "Lotong", "chi": "猴子", "icon": "🐒", "source": "New: Monkey"},
+    {"amis": "Karang", "chi": "螃蟹", "icon": "🦀", "source": "New: Crab"},
 ]
 
 sentences = [
-    {"amis": "Fangcal ko dikuc no miso.", "chi": "你的衣服很漂亮。", "icon": "✨", "source": "Fangcal + Dikuc"},
-    {"amis": "Citalaw to kohetingay.", "chi": "穿著黑色的褲子。", "icon": "👖", "source": "Ci- (Wear) + Color"},
-    {"amis": "Citupel ci mama.", "chi": "爸爸戴(有)帽子。", "icon": "🧢", "source": "Ci- + Tupel"},
-    {"amis": "Micakay kako to cukap.", "chi": "我買鞋子。", "icon": "👟", "source": "Mi-cakay (Buy)"},
-    {"amis": "Kahengang ko kiping ni Panay.", "chi": "Panay的上衣是紅色的。", "icon": "🔴", "source": "Color + Item"},
+    {"amis": "Ciwaco kiso?", "chi": "你有養狗嗎？(你有狗嗎？)", "icon": "🐕", "source": "Ci- (Have) + Waco"},
+    {"amis": "Tata'ang ko fafoy.", "chi": "豬很大。", "icon": "🐖", "source": "Tata'ang (Big) + Fafoy"},
+    {"amis": "I omah ko kolong.", "chi": "牛在田裡。", "icon": "🐂", "source": "Unit 13 Review"},
+    {"amis": "Maolah ko posi a mafoti'.", "chi": "貓喜歡睡覺。", "icon": "🐈", "source": "Unit 12 + Unit 17 Review"},
+    {"amis": "Kohecalay ko ayam.", "chi": "那隻鳥是白色的。", "icon": "🕊️", "source": "Unit 19 Review"},
 ]
 
 # --- 3. 隨機題庫 (定義) ---
 raw_quiz_pool = [
     {
-        "q": "Fangcal ko dikuc no miso.",
-        "audio": "Fangcal ko dikuc no miso",
-        "options": ["你的衣服很漂亮", "你的衣服很貴", "你的衣服很便宜"],
-        "ans": "你的衣服很漂亮",
-        "hint": "Fangcal 是漂亮/美好"
+        "q": "Ciwaco kiso?",
+        "audio": "Ciwaco kiso",
+        "options": ["你有狗嗎？", "你有貓嗎？", "你有錢嗎？"],
+        "ans": "你有狗嗎？",
+        "hint": "Waco 是狗"
     },
     {
-        "q": "Citalaw to kohetingay.",
-        "audio": "Citalaw to kohetingay",
-        "options": ["穿著黑色的褲子", "穿著紅色的褲子", "穿著白色的褲子"],
-        "ans": "穿著黑色的褲子",
-        "hint": "Koheting 是黑色 (像炭一樣)"
+        "q": "Tata'ang ko fafoy.",
+        "audio": "Tata'ang ko fafoy",
+        "options": ["豬很大", "豬很小", "豬很瘦"],
+        "ans": "豬很大",
+        "hint": "Fafoy 是豬"
     },
     {
-        "q": "單字測驗：Tupel",
-        "audio": "Tupel",
-        "options": ["帽子", "鞋子", "褲子"],
-        "ans": "帽子",
-        "hint": "戴在頭上的"
+        "q": "I omah ko kolong.",
+        "audio": "I omah ko kolong",
+        "options": ["牛在田裡", "羊在山上", "鳥在天上"],
+        "ans": "牛在田裡",
+        "hint": "Kolong 是牛"
     },
     {
-        "q": "單字測驗：Talaw",
-        "audio": "Talaw",
-        "options": ["褲子", "衣服", "鞋子"],
-        "ans": "褲子",
-        "hint": "穿在腿上的"
+        "q": "單字測驗：Posi",
+        "audio": "Posi",
+        "options": ["貓", "狗", "豬"],
+        "ans": "貓",
+        "hint": "喵喵叫的動物"
     },
     {
-        "q": "單字測驗：Cukap",
-        "audio": "Cukap",
-        "options": ["鞋子", "襪子", "手套"],
-        "ans": "鞋子",
-        "hint": "穿在腳上的 (不是襪子)"
+        "q": "單字測驗：'Oney",
+        "audio": "'Oney",
+        "options": ["蛇", "猴子", "鳥"],
+        "ans": "蛇",
+        "hint": "沒有腳的動物"
     },
     {
-        "q": "Citupel ci mama.",
-        "audio": "Citupel ci mama",
-        "options": ["爸爸戴帽子", "爸爸買帽子", "爸爸洗帽子"],
-        "ans": "爸爸戴帽子",
-        "hint": "Ci- 表示「有/穿戴」"
+        "q": "單字測驗：Siri",
+        "audio": "Siri",
+        "options": ["羊", "牛", "馬"],
+        "ans": "羊",
+        "hint": "咩咩叫的動物"
     },
     {
-        "q": "「紅色」的阿美語怎麼說？",
+        "q": "「猴子」的阿美語怎麼說？",
         "audio": None,
-        "options": ["Kahengang", "Kohecal", "Koheting"],
-        "ans": "Kahengang",
-        "hint": "像火一樣的顏色"
+        "options": ["Lotong", "Karang", "Ayam"],
+        "ans": "Lotong",
+        "hint": "喜歡爬樹的"
     }
 ]
 
@@ -162,14 +162,14 @@ if 'init' not in st.session_state:
     st.session_state.init = True
 
 # --- 5. 主介面 ---
-st.markdown("<h1 style='text-align: center; color: #8E24AA;'>Unit 19: O Dikuc</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666;'>服裝與穿著 (Clothing)</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #2E7D32;'>Unit 20: O 'Aadopen</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666;'>動物 (New Vocabulary Only)</p>", unsafe_allow_html=True)
 
 tab1, tab2 = st.tabs(["📚 詞彙與句型", "🎲 隨機挑戰"])
 
 # === Tab 1: 學習模式 ===
 with tab1:
-    st.subheader("📝 核心單字")
+    st.subheader("📝 核心單字 (New)")
     col1, col2 = st.columns(2)
     for i, word in enumerate(vocab_data):
         with (col1 if i % 2 == 0 else col2):
@@ -189,7 +189,7 @@ with tab1:
     for i, s in enumerate(sentences):
         st.markdown(f"""
         <div class="sentence-box">
-            <div style="font-size: 20px; font-weight: bold; color: #8E24AA;">{s['icon']} {s['amis']}</div>
+            <div style="font-size: 20px; font-weight: bold; color: #1B5E20;">{s['icon']} {s['amis']}</div>
             <div style="font-size: 16px; color: #555; margin-top: 5px;">{s['chi']}</div>
             <div class="source-tag">src: {s['source']}</div>
         </div>
@@ -212,6 +212,7 @@ with tab2:
             if st.button("🎧 播放題目音檔", key=f"btn_audio_{st.session_state.current_q_idx}"):
                 safe_play_audio(q_data['audio'])
         
+        # 使用洗牌後的選項
         unique_key = f"q_{st.session_state.quiz_id}_{st.session_state.current_q_idx}"
         user_choice = st.radio("請選擇正確答案：", q_data['shuffled_options'], key=unique_key)
         
@@ -229,10 +230,10 @@ with tab2:
     else:
         st.progress(1.0)
         st.markdown(f"""
-        <div style='text-align: center; padding: 30px; background-color: #E1BEE7; border-radius: 20px; margin-top: 20px;'>
-            <h1 style='color: #4A148C;'>🏆 挑戰成功！</h1>
+        <div style='text-align: center; padding: 30px; background-color: #C8E6C9; border-radius: 20px; margin-top: 20px;'>
+            <h1 style='color: #1B5E20;'>🏆 挑戰成功！</h1>
             <h3 style='color: #333;'>本次得分：{st.session_state.score}</h3>
-            <p>你已經學會描述穿著了！</p>
+            <p>你已經認識這些動物了！</p>
         </div>
         """, unsafe_allow_html=True)
         
